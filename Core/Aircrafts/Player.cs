@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using UIKit;
 using Urho;
 using Urho.Actions;
 using Urho.Urho2D;
+
 
 namespace SamplyGame
 {
@@ -15,7 +18,15 @@ namespace SamplyGame
 
 		public override int MaxHealth => 70;
 
-		protected override async void Init()
+        const int kAccelerometerFrequency = 100; // Hz
+        const double kFilteringFactor = 0.1; // For filtering out gravitational affects
+
+        public double accx;
+        public double accy;
+        public double accz;
+
+
+        protected override async void Init()
 		{
 			var cache = Application.ResourceCache;
 			var node = Node;
@@ -72,8 +83,60 @@ namespace SamplyGame
 			var input = Application.Current.Input;
 			var aircraft = Node;
 
-			int positionX = 0, positionY = 0;
-			bool hasInput = false;
+            int positionX = 0, positionY = 0;
+            bool hasInput = false;
+
+
+            if (((SamplyGame)Application).accx != 0)
+             //   if (false)
+                {
+                accx = ((SamplyGame)Application.Current).accx * kFilteringFactor + accx * (1.0 - kFilteringFactor);
+                accy = ((SamplyGame)Application.Current).accy * kFilteringFactor + accy * (1.0 - kFilteringFactor);
+                accz = ((SamplyGame)Application.Current).accz * kFilteringFactor + accz * (1.0 - kFilteringFactor);
+
+                accy = (accy + .06) * 1.1;
+
+                //float absAccz = 0;
+                //if (accz < 0)
+                //    absAccz *= -1;
+                //if (accy < 0)
+                //    accy -= absAccz;
+                //else
+                //    accy += absAccz;
+                //accz *= -6;
+                //accy *= 6;
+
+
+                double speed = Math.Sqrt(Math.Pow(accz, 2) + Math.Pow(accy, 2));
+
+
+
+                //if (speed < 0)
+                //    speed *= -1;
+
+                //double speedLimit = 160;
+
+                //if (speed > speedLimit)
+                //{
+                //    accy = accy * (speedLimit / speed);
+                //    accz = accz * (speedLimit / speed);
+                //}
+
+                //if (speed > speedLimit)
+                //{
+                //    accy = accy * (speedLimit / speed);
+                //    accz = accz * (speedLimit / speed);
+                //}
+
+                positionX = positionX + (int)(accx * 800) + 400;
+                positionY = positionY - (int)(accy * 800) + 600;
+                 hasInput = true;
+            }
+
+
+
+
+
 			if (input.NumTouches > 0)
 			{
 				// move with touches:
