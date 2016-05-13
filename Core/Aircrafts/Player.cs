@@ -96,37 +96,9 @@ namespace SamplyGame
 
                 accy = (accy + .06) * 1.1;
 
-                //float absAccz = 0;
-                //if (accz < 0)
-                //    absAccz *= -1;
-                //if (accy < 0)
-                //    accy -= absAccz;
-                //else
-                //    accy += absAccz;
-                //accz *= -6;
-                //accy *= 6;
-
 
                 double speed = Math.Sqrt(Math.Pow(accz, 2) + Math.Pow(accy, 2));
 
-
-
-                //if (speed < 0)
-                //    speed *= -1;
-
-                //double speedLimit = 160;
-
-                //if (speed > speedLimit)
-                //{
-                //    accy = accy * (speedLimit / speed);
-                //    accz = accz * (speedLimit / speed);
-                //}
-
-                //if (speed > speedLimit)
-                //{
-                //    accy = accy * (speedLimit / speed);
-                //    accz = accz * (speedLimit / speed);
-                //}
 
                 positionX = positionX + (int)(accx * 800) + 400;
                 positionY = positionY - (int)(accy * 800) + 600;
