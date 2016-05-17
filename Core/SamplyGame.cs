@@ -4,7 +4,6 @@ using Urho;
 using Urho.Gui;
 using Urho.Physics;
 using Urho.Actions;
-using CoreMotion;
 using Foundation;
 
 namespace SamplyGame
@@ -17,15 +16,11 @@ namespace SamplyGame
 		Scene scene;
 		Text coinsText;
 
-        private CMMotionManager motionManager = new CMMotionManager();
+       
 
-        public double accx = 0;
-        public double accy = 0;
-        public double accz = 0;
-
-
-        public CMAccelerometerData AccelerometerData;
-
+        public float accx = 0;
+        public float accy = 0;
+        public float accz = 0;
 
 
         public Player Player { get; private set; }
@@ -35,14 +30,6 @@ namespace SamplyGame
 		public SamplyGame() : base(new ApplicationOptions(assetsFolder: "Data") { Height = 736, Width = 414, Orientation = ApplicationOptions.OrientationType.Portrait })
         {
 
-              motionManager.StartAccelerometerUpdates(NSOperationQueue.CurrentQueue, (data, error) =>
-            {
-
-                accx = data.Acceleration.X;
-                accy = data.Acceleration.Y;
-                accz = data.Acceleration.Z;
-
-            });
             
         }
 

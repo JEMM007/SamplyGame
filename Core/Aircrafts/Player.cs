@@ -19,11 +19,12 @@ namespace SamplyGame
 		public override int MaxHealth => 70;
 
         const int kAccelerometerFrequency = 100; // Hz
-        const double kFilteringFactor = 0.1; // For filtering out gravitational affects
+        const double kFilteringFactor = 0.2; // For filtering out gravitational affects
 
         public double accx;
         public double accy;
         public double accz;
+        private int loopCount = 0;
 
 
         protected override async void Init()
@@ -86,22 +87,26 @@ namespace SamplyGame
             int positionX = 0, positionY = 0;
             bool hasInput = false;
 
+            float laccx = ((SamplyGame)Application.Current).accx;
+            float laccy = ((SamplyGame)Application.Current).accy;
+            float laccz = ((SamplyGame)Application.Current).accz;
 
-            if (((SamplyGame)Application).accx != 0)
+            if (laccx != 0 && laccy < 1 && laccy > -1)
              //   if (false)
                 {
-                accx = ((SamplyGame)Application.Current).accx * kFilteringFactor + accx * (1.0 - kFilteringFactor);
-                accy = ((SamplyGame)Application.Current).accy * kFilteringFactor + accy * (1.0 - kFilteringFactor);
-                accz = ((SamplyGame)Application.Current).accz * kFilteringFactor + accz * (1.0 - kFilteringFactor);
+                accx = laccx * kFilteringFactor + accx * (1.0 - kFilteringFactor);
+                accy = laccy * kFilteringFactor + accy * (1.0 - kFilteringFactor);
+                accz = laccz * kFilteringFactor + accz * (1.0 - kFilteringFactor);
+
 
                 accy = (accy + .06) * 1.1;
 
 
-                double speed = Math.Sqrt(Math.Pow(accz, 2) + Math.Pow(accy, 2));
+             //   double speed = Math.Sqrt(Math.Pow(accz, 2) + Math.Pow(accy, 2));
 
 
                 positionX = positionX + (int)(accx * 800) + 400;
-                positionY = positionY - (int)(accy * 800) + 600;
+                positionY = (positionY - (int)(accy * 800)) + 600;
                  hasInput = true;
             }
 
