@@ -40,13 +40,34 @@
 			public const string MissileTrace = "Particles/MissileTrace.pex";
 		}
 
-		public static class Sounds
-		{
-			public const string BigExplosion = "Sounds/BigExplosion.wav";
-			public const string MachineGun = "Sounds/MachineGun.wav";
-			public const string SmallExplosion = "Sounds/SmallExplosion.wav";
-			public const string Powerup = "Sounds/Powerup.wav";
-		}
+        public static class Sounds
+        {
+            public static string BigExplosion = "Sounds/BigExplosion.wav";
+            public static string MachineGun = "Sounds/MachineGun.wav";
+            public static string SmallExplosion = "Sounds/SmallExplosion.wav";
+            public static string Powerup = "Sounds/Powerup.wav";
+            public static bool Muted = false;
+
+            public static void SoundOff()
+            {
+                BigExplosion = "";
+                MachineGun = "";
+                SmallExplosion = "";
+                Powerup = "";
+                Muted = true;
+            }
+
+            public static void SoundOn()
+            {
+                BigExplosion = "Sounds/BigExplosion.wav";
+                MachineGun = "Sounds/MachineGun.wav";
+                SmallExplosion = "Sounds/SmallExplosion.wav";
+                Powerup = "Sounds/Powerup.wav";
+                Muted = false;
+            }
+        }
+
+        
 
 		public static class Fonts
 		{

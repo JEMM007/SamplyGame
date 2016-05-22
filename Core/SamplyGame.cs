@@ -16,16 +16,16 @@ namespace SamplyGame
 		Scene scene;
 		Text coinsText;
 
-       
 
         public float accx = 0;
         public float accy = 0;
         public float accz = 0;
 
+        public bool useAccelerometer;
 
         public Player Player { get; private set; }
 
-		public Viewport Viewport { get; private set; }
+		public Viewport Viewport  { get; private set; }
 
 		public SamplyGame() : base(new ApplicationOptions(assetsFolder: "Data") { Height = 736, Width = 414, Orientation = ApplicationOptions.OrientationType.Portrait })
         {

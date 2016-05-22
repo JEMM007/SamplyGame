@@ -91,7 +91,7 @@ namespace SamplyGame
             float laccy = ((SamplyGame)Application.Current).accy;
             float laccz = ((SamplyGame)Application.Current).accz;
 
-            if (laccx != 0 && laccy < 1 && laccy > -1)
+            if (((SamplyGame)Application.Current).useAccelerometer)
              //   if (false)
                 {
                 accx = laccx * kFilteringFactor + accx * (1.0 - kFilteringFactor);

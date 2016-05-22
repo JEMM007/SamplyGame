@@ -3,6 +3,7 @@ using Urho;
 using Urho.Gui;
 using Urho.Actions;
 
+
 namespace SamplyGame
 {
 	public class StartMenu : Component
@@ -13,8 +14,9 @@ namespace SamplyGame
 		Text textBlock;
 		Node menuLight;
 		bool finished = true;
+        System.DateTime MenuClickDTS = System.DateTime.Now;
 
-		public StartMenu()
+        public StartMenu()
 		{
 			ReceiveSceneUpdates = true;
 		}
@@ -50,29 +52,82 @@ namespace SamplyGame
 			textBlock = new Text();
 			textBlock.HorizontalAlignment = HorizontalAlignment.Center;
 			textBlock.VerticalAlignment = VerticalAlignment.Bottom;
-			textBlock.Value = "TAP TO START";
-			textBlock.SetFont(cache.GetFont(Assets.Fonts.Font), Application.Graphics.Width / 15);
+            if (Assets.Sounds.Muted)
+            {
+                textBlock.Value = "MUTED\n\n\nSTART MOTION\n\n\nSTART TOUCH";
+            }
+            else
+            {
+                textBlock.Value = "SOUND\n\n\nSTART MOTION\n\n\nSTART TOUCH";
+            }
+			
+			textBlock.SetFont(cache.GetFont(Assets.Fonts.Font), Application.Graphics.Width / 18);
 			Application.UI.Root.AddChild(textBlock);
 
-			menuTaskSource = new TaskCompletionSource<bool>();
+
+
+            menuTaskSource = new TaskCompletionSource<bool>();
 			finished = false;
 			await menuTaskSource.Task;
 		}
 
 		protected override async void OnUpdate(float timeStep)
 		{
-			if (finished)
-				return;
 
-			var input = Application.Input;
+
+                if (finished)
+                    return;
+
+            if (MenuClickDTS.AddSeconds(.1) > System.DateTime.Now)
+                return;
+
+            MenuClickDTS = System.DateTime.Now;
+
+
+            var input = Application.Current.Input;
 			if (input.GetMouseButtonDown(MouseButton.Left) || input.NumTouches > 0)
-			{
-				finished = true;
-				Application.UI.Root.RemoveChild(textBlock, 0);
-				await bigAircraft.RunActionsAsync(new EaseIn(new MoveBy(1f, new Vector3(-10, -2, -10)), 3));
-				rotor.RemoveAllActions();
-				menuTaskSource.TrySetResult(true);
-			}
+            {
+                input.RemoveAllGestures();
+                TouchState state = input.GetTouch(0);
+                var touchPosition = state.Position;
+                Vector3 destWorldPos = ((SamplyGame)Application).Viewport.ScreenToWorldPoint(touchPosition.X, touchPosition.Y, 10);
+
+                if (destWorldPos.Y > -2 && destWorldPos.Y < 0)
+                {
+                        if (Assets.Sounds.BigExplosion.Length > 0)
+                        {
+                            Assets.Sounds.SoundOff();
+                            textBlock.Value = "MUTED\n\n\nSTART MOTION\n\n\nSTART TOUCH";
+                        }
+                        else
+                        {
+                            Assets.Sounds.SoundOn();
+                            textBlock.Value = "SOUND\n\n\nSTART MOTION\n\n\nSTART TOUCH";
+                        }
+                    
+                    return;
+                }
+
+                else
+
+                {
+                    if (destWorldPos.Y >= -3 && destWorldPos.Y <= -2)
+                    {
+                        ((SamplyGame)Application.Current).useAccelerometer = true;
+                    }
+                    else if (destWorldPos.Y < -3)
+                    {
+                        ((SamplyGame)Application.Current).useAccelerometer = false;
+                    }
+
+                    finished = true;
+                    Application.UI.Root.RemoveChild(textBlock, 0);
+                    await bigAircraft.RunActionsAsync(new EaseIn(new MoveBy(1f, new Vector3(-10, -2, -10)), 3));
+                    rotor.RemoveAllActions();
+                    menuTaskSource.TrySetResult(true);
+                }
+                
+            }
 		}
 	}
 }
