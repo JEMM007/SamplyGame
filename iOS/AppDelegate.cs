@@ -35,9 +35,6 @@ namespace SamplyGame.iOS
 
             motionManager.StartAccelerometerUpdates(NSOperationQueue.CurrentQueue, (data, error) =>
             {
-          //      Game.accx = data.Acceleration.X;
-           //     Game.accy = data.Acceleration.Y;
-             //   Game.accz = data.Acceleration.Z;
 
                 ((SamplyGame)Urho.Application.Current).accx = (float)data.Acceleration.X;
                 ((SamplyGame)Urho.Application.Current).accy = (float)data.Acceleration.Y;
