@@ -45,8 +45,8 @@ namespace SamplyGame.Droid
             {
                 if (Urho.Application.HasCurrent)
                 { 
-                ((SamplyGame)Urho.Application.Current).accx = -1*e.Values[0]/10;
-                ((SamplyGame)Urho.Application.Current).accy = -1*e.Values[1]/10;
+                ((SamplyGame)Urho.Application.Current).accx = -1*e.Values[0]/6;
+                    ((SamplyGame)Urho.Application.Current).accy = -1 * e.Values[1] / 6 + (float).6;
                 ((SamplyGame)Urho.Application.Current).accz = e.Values[2];
             }
             }
