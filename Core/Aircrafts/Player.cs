@@ -19,7 +19,7 @@ namespace SamplyGame
 		public override int MaxHealth => 70;
 
         const int kAccelerometerFrequency = 100; // Hz
-        const double kFilteringFactor = 0.2; // For filtering out gravitational affects
+        const double kFilteringFactor = .2; // For filtering out gravitational affects
 
         public double accx;
         public double accy;

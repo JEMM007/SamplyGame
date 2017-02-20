@@ -70,7 +70,7 @@ namespace SamplyGame
 			finished = false;
 			await menuTaskSource.Task;
 		}
-
+ 
 		protected override async void OnUpdate(float timeStep)
 		{
 
