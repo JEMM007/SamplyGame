@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Views;
 using Urho.Droid;
 using Android.Hardware;
+using Android.Content;
 
 namespace SamplyGame.Droid
 {
@@ -35,7 +36,6 @@ namespace SamplyGame.Droid
             mLayout.AddView(surface);
 			SetContentView(mLayout);
 
-           
 
         }
 
@@ -98,5 +98,16 @@ namespace SamplyGame.Droid
 			UrhoSurface.OnWindowFocusChanged(hasFocus);
 			base.OnWindowFocusChanged(hasFocus);
 		}
-	}
+
+        public StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        {
+
+            PowerManager pm = (PowerManager)GetSystemService(Context.PowerService);
+            PowerManager.WakeLock wl = pm.NewWakeLock(WakeLockFlags.Partial, "My Tag");
+            wl.Acquire();
+            return StartCommandResult.ContinuationMask;
+
+        }
+
+    }
 }
